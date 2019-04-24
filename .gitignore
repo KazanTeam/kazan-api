@@ -1,3 +1,4 @@
 logs/
 lib/
 velocity.log
+conf/api.properties
