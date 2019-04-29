@@ -1,1 +1,1 @@
-java -Dfile.encoding=UTF-8 -classpath "lib/net-mtv-api-1.0;lib/*" -Dlog4j.configuration=file:conf/log4j.properties -Dlog4j.debug org.d.api.Main 
+java -Dfile.encoding=UTF-8 -classpath "lib/net-mtv-api-1.0;lib/*" -Dlog4j.configuration=file:conf/log4j.properties -Dlog4j.debug org.d.api.Main

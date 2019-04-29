@@ -206,7 +206,7 @@ if (null != objects && objects.size() > 0) {
 
         String sendedContent = "";		
         sendedContent = groupName.toUpperCase();
-        if("0" != sL.get("count_send")) {
+        if("0" != sL.get("count_send") && "1" != sL.get("count_send")) {
             sendedContent += " AND " + sL.get("count_send") + " MORE";
         }
         if ("2" == mode) {
