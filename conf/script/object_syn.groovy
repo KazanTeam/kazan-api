@@ -15,8 +15,9 @@ for (String groupAlias: groupAliases) {
         continue;
     }
     String groupId = getGroupId.get(0).get("group_id");
+    String roleId = getGroupId.get(0).get("role_id");
     
-    if (2 == roleId || 3 == roleId ) {
+    if ("2" == roleId ||"3" == roleId ) {
         Main.utility.upd("delete from object where user_id=? and group_id=? and mode_id=? and symbol=?", [userId, groupId, mode, symbol], "default");
         if (null != objects && objects.size() > 0) {
             for (Map<String,String> obj: objects) {
