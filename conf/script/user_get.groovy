@@ -42,34 +42,14 @@ if ("1" == roleStr || "2" == roleStr) {
     }
 }
 
-if (mode > 1 && roleId <= mode) {
-    String user_id = "";            
-    if(!"".equals(getFromUser)) {
-        List<Map<String,String>> getUserId = Main.utility.qry("select user_id from users where username=?", [getFromUser], "default");
-        user_id = getUserId.get(0).get("user_id");
-    }
-
-    String mode_id = mode;
-    if("".equals(user_id)) {
-        List<Map<String,String>> userUpdate = Main.utility.qry("""
-            SELECT o.mode_id, u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
-            FROM object o JOIN users u on o.user_id = u.user_id
-            WHERE o.group_id = ? and o.mode_id >= ? and o.symbol = ?
-            GROUP BY o.updated_date, o.user_id, u.username, o.mode_id
-            ORDER BY o.updated_date desc
-            """, [groupId, mode, symbol], "default");            
-        if (0 == userUpdate.size()) {
-            return ["error_code":"-1","desc":"Found no update!!!"];
-        }
-        mode_id = userUpdate.get(0).get("mode_id");
-        user_id = userUpdate.get(0).get("user_id");
-    }
-
-    if ("2" == mode_id || "3" == mode_id || "4" == mode_id) {
-        return ["error_code":"1","objects":gson.toJson(Main.utility.qry("select * from object where symbol=? and user_id=? and group_id=? and mode_id=?", [symbol,user_id,groupId,mode_id], "default"))];
-    } else {
-        return ["error_code":"-1","desc":"Invalid mode!!!"];
-    }
-} else {
-    return ["error_code":"-1","desc":"Error getting object!"];
+List<Map<String,String>> userUpdate = Main.utility.qry("""
+    SELECT o.mode_id, u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
+    FROM object o JOIN users u on o.user_id = u.user_id
+    WHERE o.group_id = ? and o.mode_id >= ? and o.symbol = ?
+    GROUP BY o.updated_date, o.user_id, u.username, o.mode_id
+    ORDER BY o.updated_date desc
+    """, [groupId, mode, symbol], "default");            
+if (0 == userUpdate.size()) {
+    return ["error_code":"-1","desc":"Found no update!!!"];
 }
+return ["error_code":"1","updates":userUpdate];

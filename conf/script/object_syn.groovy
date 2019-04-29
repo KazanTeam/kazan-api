@@ -1,7 +1,4 @@
-import com.google.gson.reflect.TypeToken;
 import org.d.api.*;
-
-String t = email+"|"+password+"|"+symbol+"|"+mode+"|"+period+"|"+accountName+"|"+accountNumber+"|"+accountServer+"|"+note;
 
 String userId = "";
 List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
@@ -13,14 +10,12 @@ if (0 == userList.size()) {
 
 List<String> groupIds = new ArrayList<String>();
 for (String groupAlias: groupAliases) {
-    // int groupId = ugrRepository.getGroupIdByGroupAlias(userId, groupAliase);
     List<Map<String,String>> getGroupId = Main.utility.qry("select group_id from user_group_role where user_id=? and group_alias=?", [userId, groupAlias], "default");
     if (0 == getGroupId.size()) {
         continue;
     }
     String groupId = getGroupId.get(0).get("group_id");
     
-    // int roleId = ugrRepository.getByGroupIdUserIdSymbol(userId, groupId, symbol); 
     List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, symbol_master, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where user_id=? and group_id=?", [userId, groupId], "default");
     if (0 == getRoleId.size()) {
         continue;
