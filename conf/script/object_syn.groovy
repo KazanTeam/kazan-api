@@ -10,40 +10,13 @@ if (0 == userList.size()) {
 
 List<String> groupIds = new ArrayList<String>();
 for (String groupAlias: groupAliases) {
-    List<Map<String,String>> getGroupId = Main.utility.qry("select group_id from user_group_role where user_id=? and group_alias=?", [userId, groupAlias], "default");
+    List<Map<String,String>> getGroupId = Main.utility.qry("select group_id, role_id from user_group_role where user_id=? and group_alias=?", [userId, groupAlias], "default");
     if (0 == getGroupId.size()) {
         continue;
     }
     String groupId = getGroupId.get(0).get("group_id");
     
-    List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, symbol_master, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where user_id=? and group_id=?", [userId, groupId], "default");
-    if (0 == getRoleId.size()) {
-        continue;
-    }
-    int roleId = 0;
-    String roleStr = getRoleId.get(0).get("role_id");
-    String symbolStr = getRoleId.get(0).get("symbol_master");
-    if ("1" == roleStr || "2" == roleStr) {
-        roleId = 2;
-    } else if ("3" == roleStr) {
-        if (null != symbolStr) {
-            String[] listSymbolMasters = symbolStr.split(",");
-            for(String symbolMaster: listSymbolMasters) {
-                if(symbol.equalsIgnoreCase(symbolMaster)) roleId = 2;
-            }
-        }
-        if (0 == roleId) {
-            roleId = 3;
-        }        
-    } else if ("4" == roleStr) {
-        if ("1" == getRoleId.get(0).get("in_use")) {
-            roleId = 4;
-        } else {
-            roleId = 5;
-        }
-    }
-    
-    if (2 == roleId || (3 == roleId && 3 == mode) ) {
+    if (2 == roleId || 3 == roleId ) {
         Main.utility.upd("delete from object where user_id=? and group_id=? and mode_id=? and symbol=?", [userId, groupId, mode, symbol], "default");
         if (null != objects && objects.size() > 0) {
             for (Map<String,String> obj: objects) {
@@ -175,11 +148,7 @@ groupIdStr += ")";
 
 if (null != objects && objects.size() > 0) {
     int telegramBotType = 0;
-    if ("3" == mode) {
-        telegramBotType = 1;
-    } else {
-        telegramBotType = 2;
-    }
+    
     List<Map<String,String>> getUsername = Main.utility.qry("select username from users where user_id=?", [userId], "default");
     String username = "";
     if (getUsername.size() > 0) {
@@ -189,14 +158,12 @@ if (null != objects && objects.size() > 0) {
     }
     String content = username + "-" + symbol + "_" + period;
 
-    List<Map<String,String>> sendList = Main.utility.qry("select max(gr.group_alert_bot) group_alert_bot, max(gr.group_notify_bot) group_notify_bot, max(gr.group_name) group_name, us.telegram_id, count(*) count_send from groups gr join user_group_role ugr on gr.group_id = ugr.group_id join users us on ugr.user_id = us.user_id where gr.group_id in " + groupIdStr + " and ugr.role_id<=? and us.user_id=?", 
+    List<Map<String,String>> sendList = Main.utility.qry("select max(gr.group_alert_bot) group_alert_bot, max(gr.group_name) group_name, us.telegram_id, count(*) count_send from groups gr join user_group_role ugr on gr.group_id = ugr.group_id join users us on ugr.user_id = us.user_id where gr.group_id in " + groupIdStr + " and ugr.role_id<=? and us.user_id=?", 
         [mode, userId], "default");
 
     for (Map<String,String> sL: sendList) {
-        String groupAlertBot = sL.get("group_alert_bot");
-        String groupNotifyBot = sL.get("group_notify_bot");
+        String telegramTokenBot = sL.get("group_alert_bot");
         String groupName = sL.get("group_name");
-        String telegramTokenBot = (1 == telegramBotType) ? (null != groupNotifyBot ? groupNotifyBot : groupAlertBot) : (null != groupAlertBot ? groupAlertBot : groupNotifyBot);
         String telegramId = sL.get("telegram_id");
 
         String sendedContent = "";		
@@ -204,13 +171,8 @@ if (null != objects && objects.size() > 0) {
         if("0" != sL.get("count_send") && "1" != sL.get("count_send")) {
             sendedContent += " AND " + sL.get("count_send") + " MORE";
         }
-        if ("2" == mode) {
-            sendedContent += " MASTER: ";
-        } else if ("3" == mode) {
-            sendedContent+= " : ";
-        } else if("4" == mode || "5" == mode) {
-            sendedContent+= " ALERT : ";
-        }
+        sendedContent+= " : ";
+        
         if (null != note)
             sendedContent += note;
         sendedContent += System.lineSeparator() + content;
