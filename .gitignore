@@ -6,5 +6,6 @@ conf/script/test.groovy
 *.jpg
 *.png
 *.bmp
+conf/api.properties
 *.properties
 ff_calendar_thisweek.xml
