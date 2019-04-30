@@ -9,37 +9,25 @@ if (0 == userList.size()) {
 }
 
 String groupAlias = groupAliases.get(0);
-List<Map<String,String>> getGroupId = Main.utility.qry("select group_id from user_group_role where user_id=? and group_alias=?", [userId, groupAlias], "default");
+List<Map<String,String>> getGroupId = Main.utility.qry("select group_id from user_group_role where role_id in(2,3,4) and user_id=? and group_alias=?", [userId, groupAlias], "default");
 if (0 == getGroupId.size()) {
     return ["error_code":"-1","desc":"Group not found!"];
 }
 String groupId = getGroupId.get(0).get("group_id");
 
-List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, symbol_master, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where user_id=? and group_id=?", [userId, groupId], "default");
+List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, symbol_master, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where  role_id in(2,3,4) and user_id=? and group_id=?", [userId, groupId], "default");
 if (0 == getRoleId.size()) {
     return ["error_code":"-1","desc":"RoleId not found!"];
 }
-int roleId = 0;
-String roleStr = getRoleId.get(0).get("role_id");
+int roleId = Integer.parseInt(getRoleId.get(0).get("role_id"));
 String symbolStr = getRoleId.get(0).get("symbol_master");
-if ("1" == roleStr || "2" == roleStr) {
-    roleId = 2;
-} else if ("3" == roleStr) {
-    if (null != symbolStr) {
-        String[] listSymbolMasters = symbolStr.split(",");
-        for(String symbolMaster: listSymbolMasters) {
-            if(symbol.equalsIgnoreCase(symbolMaster)) roleId = 2;
-        }
+if (3 == roleId && null != symbolStr) {
+    String[] listSymbolMasters = symbolStr.split(",");
+    for(String symbolMaster: listSymbolMasters) {
+        if(symbol.equalsIgnoreCase(symbolMaster)) roleId = 2;
     }
-    if (0 == roleId) {
-        roleId = 3;
-    }        
-} else if ("4" == roleStr) {
-    if ("1" == getRoleId.get(0).get("in_use")) {
-        roleId = 4;
-    } else {
-        roleId = 5;
-    }
+} else if (4 == roleId && ("0" == getRoleId.get(0).get("in_use"))) {
+    roleId = 5;
 }
 
 if (mode > 1 && roleId <= mode) {
