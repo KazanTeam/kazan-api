@@ -54,7 +54,7 @@ for (Map<String,String> sL: sendList) {
         sendedContent += note;
         
     if(binding.hasVariable("image") && null != image && "" != image) {
-        sendedContent+= System.lineSeparator() + System.lineSeparator() + image;
+        sendedContent+= System.lineSeparator() + image;
     }
     Main.get(Main.props.getString("telegram_url") + telegramTokenBot + "/sendMessage?chat_id=" + telegramId + "&text="+ URLEncoder.encode(sendedContent));        
 }
