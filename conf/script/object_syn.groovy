@@ -1,13 +1,8 @@
 import org.d.api.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
-import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.Update;
-import java.awt.image.BufferedImage;
 import sun.misc.BASE64Decoder;
-import javax.imageio.ImageIO;
 
 String userId = "";
 List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
@@ -182,35 +177,12 @@ if (null != objects && objects.size() > 0) {
         if (null != note)
             sendedContent += note;
         sendedContent += System.lineSeparator() + content;
-        if(binding.hasVariable("imageUrl") && null != imageUrl && "" != imageUrl) {
-            sendedContent+= System.lineSeparator() + System.lineSeparator() + imageUrl;
-        }
-        Main.get(Main.props.getString("telegram_url") + telegramTokenBot + "/sendMessage?chat_id=" + telegramId + "&text="+ URLEncoder.encode(sendedContent));
         
-/*        TelegramBot bot = new TelegramBot(telegramTokenBot);
+        if(binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
+            byte[] imageByte = new BASE64Decoder().decodeBuffer(image_data);
 
-        def sourceData = image;
-
-        // tokenize the data
-        def parts = sourceData.tokenize(",");
-        def imageString = parts[1];
-
-        // create a buffered image
-        BufferedImage image1 = null;
-        byte[] imageByte;
-
-        BASE64Decoder decoder = new BASE64Decoder();
-        imageByte = decoder.decodeBuffer(imageString);
-        ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-        image1 = ImageIO.read(bis);
-        bis.close();
-
-        // write the image to a file
-        String fileName = System.nanoTime() + image_name;
-        File outputfile = new File(fileName);
-        ImageIO.write(image1, "jpg", outputfile);
-
-        SendResponse response = bot.execute(new SendPhoto(telegramId, new File(fileName)).caption(sendedContent));*/
+            SendResponse response = new TelegramBot(telegramTokenBot).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
+        }
     }
 }
         

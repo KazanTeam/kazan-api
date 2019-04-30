@@ -1,4 +1,8 @@
 import org.d.api.*;
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.response.SendResponse;
+import com.pengrad.telegrambot.request.SendPhoto;
+import sun.misc.BASE64Decoder;
 
 String userId = "";
 List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
@@ -53,10 +57,11 @@ for (Map<String,String> sL: sendList) {
     if (null != note)
         sendedContent += note;
         
-    if(binding.hasVariable("image") && null != image && "" != image) {
-        sendedContent+= System.lineSeparator() + image;
+    if(binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
+        byte[] imageByte = new BASE64Decoder().decodeBuffer(image_data);
+
+        SendResponse response = new TelegramBot(telegramTokenBot).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
     }
-    Main.get(Main.props.getString("telegram_url") + telegramTokenBot + "/sendMessage?chat_id=" + telegramId + "&text="+ URLEncoder.encode(sendedContent));        
 }
 
 return ["error_code":"1","desc":"Message added successfully!"];

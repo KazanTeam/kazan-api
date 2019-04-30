@@ -1,9 +1,10 @@
 logs/
 lib/
+templates/
 velocity.log
-conf/api.properties
 conf/script/test.groovy
 *.jpg
 *.png
 *.bmp
+*.properties
 ff_calendar_thisweek.xml

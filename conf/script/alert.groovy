@@ -1,4 +1,8 @@
 import org.d.api.*;
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.response.SendResponse;
+import com.pengrad.telegrambot.request.SendPhoto;
+import sun.misc.BASE64Decoder;
 
 String userId = "";
 String telegramId = "";
@@ -17,8 +21,11 @@ String sendedContent = "ALERT: ";
 if (null != note)
     sendedContent += note + System.lineSeparator();
 sendedContent += symbol + "-" + period
-if(binding.hasVariable("image") && null != image && "" != image) {
-    sendedContent+= System.lineSeparator() + image;
+
+if (binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
+    byte[] imageByte = new BASE64Decoder().decodeBuffer(image_data);
+
+    SendResponse response = new TelegramBot(Main.props.getString("telegram_bot_default")).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
 }
-Main.get(Main.props.getString("telegram_url") + "582605967:AAFB9Aq2tsA2GbmXejsfWH2RfPpV6BUUJOU/sendMessage?chat_id=" + telegramId + "&text="+ URLEncoder.encode(sendedContent));        
+
 return ["error_code":"1","desc":"Alerted!"];
