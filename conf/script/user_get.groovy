@@ -52,4 +52,7 @@ List<Map<String,String>> userUpdate = Main.utility.qry("""
 if (0 == userUpdate.size()) {
     return ["error_code":"-1","desc":"Found no update!!!"];
 }
+for (Map<String,String> uU: userUpdate) {
+    while (uU.values().remove(""));
+}
 return ["error_code":"1","updates":userUpdate];

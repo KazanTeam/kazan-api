@@ -66,7 +66,11 @@ if (mode > 1 && roleId <= mode) {
     }
 
     if ("2" == mode_id || "3" == mode_id || "4" == mode_id) {
-        return ["error_code":"1","objects":gson.toJson(Main.utility.qry("select * from object where symbol=? and user_id=? and group_id=? and mode_id=?", [symbol,user_id,groupId,mode_id], "default"))];
+        List<Map<String,String>> objectList = Main.utility.qry("select * from object where symbol=? and user_id=? and group_id=? and mode_id=?", [symbol,user_id,groupId,mode_id], "default")
+        for (Map<String,String> oL: objectList) {
+            while (oL.values().remove(""));
+        }
+        return ["error_code":"1","objects":gson.toJson(objectList)];
     } else {
         return ["error_code":"-1","desc":"Invalid mode!!!"];
     }

@@ -3,3 +3,6 @@ lib/
 velocity.log
 conf/api.properties
 conf/script/test.groovy
+*.jpg
+*.png
+*.bmp
