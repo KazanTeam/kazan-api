@@ -15,7 +15,7 @@ if (0 == getGroupId.size()) {
 }
 String groupId = getGroupId.get(0).get("group_id");
 
-List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, symbol_master, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where  role_id in(2,3,4) and user_id=? and group_id=?", [userId, groupId], "default");
+List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where  role_id in(2,3,4) and user_id=? and group_id=?", [userId, groupId], "default");
 if (0 == getRoleId.size()) {
     return ["error_code":"-1","desc":"RoleId not found!"];
 }
