@@ -1,14 +1,9 @@
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import com.google.gson.reflect.TypeToken;
 import org.d.api.*;
 
-
-String t = email + "|"+password+"|"+symbol+"|"+mode+"|"+period+"|"+accountName+"|"+accountNumber+"|"+accountServer;
-
-System.out.println("aaaaaaaaaaa..................." + t);
-
-return ["error_code":"-1","result":email,"Desc":"Service not found only package_list"];
+String userId = "";
+List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
+if (0 == userList.size()) {
+    return ["error_code":"-1","desc":"Wrong Email or Password!!!"];
+} else {
+    userId = userList.get(0).get("user_id");
+}

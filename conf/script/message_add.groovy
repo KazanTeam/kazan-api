@@ -35,7 +35,7 @@ if (getUsername.size() > 0) {
 } else {
     return ["error_code":"-1","desc":"Cannot find username from userId!"];
 }
-String content = username + "-" + symbol + "_" + period;
+String content = username + ": ";
 
 List<Map<String,String>> sendList = Main.utility.qry("select max(gr.group_alert_bot) group_alert_bot, max(gr.group_name) group_name, us.telegram_id, count(*) count_send from groups gr join user_group_role ugr on gr.group_id = ugr.group_id join users us on ugr.user_id = us.user_id where gr.group_id in " + groupIdStr + " and ugr.role_id<=? and us.user_id=?", [mode, userId], "default");
 
@@ -45,17 +45,16 @@ for (Map<String,String> sL: sendList) {
     String telegramId = sL.get("telegram_id");
 
     String sendedContent = "";		
-    sendedContent = groupName.toUpperCase();
+    sendedContent = groupName.toUpperCase() + System.lineSeparator() + content;
     if("0" != sL.get("count_send") && "1" != sL.get("count_send")) {
         sendedContent += " AND " + sL.get("count_send") + " MORE";
     }
-    sendedContent+= " : ";
     
     if (null != note)
         sendedContent += note;
-    sendedContent += System.lineSeparator() + content;
-    if(binding.hasVariable("imageUrl") && null != imageUrl && "" != imageUrl) {
-        sendedContent+= System.lineSeparator() + System.lineSeparator() + imageUrl;
+        
+    if(binding.hasVariable("image") && null != image && "" != image) {
+        sendedContent+= System.lineSeparator() + System.lineSeparator() + image;
     }
     Main.get(Main.props.getString("telegram_url") + telegramTokenBot + "/sendMessage?chat_id=" + telegramId + "&text="+ URLEncoder.encode(sendedContent));        
 }
