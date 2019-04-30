@@ -20,6 +20,8 @@ if (0 == getRoleId.size()) {
     return ["error_code":"-1","desc":"RoleId not found!"];
 }
 
+
+
 String user_id = "";            
 if(!"".equals(getFromUser)) {
 	List<Map<String,String>> getUserId = Main.utility.qry("select user_id from users where email=?", [getFromUser], "default");
@@ -28,13 +30,13 @@ if(!"".equals(getFromUser)) {
 
 String mode_id = mode;
 if("".equals(user_id)) {
-	List<Map<String,String>> userUpdate = Main.utility.qry("""
-		SELECT o.mode_id, u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
-		FROM object o JOIN users u on o.user_id = u.user_id
-		WHERE o.group_id = ? and o.mode_id >= ? and o.symbol = ?
-		GROUP BY o.updated_date, o.user_id, u.username, o.mode_id
-		ORDER BY o.updated_date desc
-		""", [groupId, mode, symbol], "default");            
+	 List<Map<String,String>> userUpdate = Main.utility.qry("""
+            SELECT u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
+            FROM object o JOIN users u on o.user_id = u.user_id
+            WHERE o.group_id = ? and o.symbol = ?
+            GROUP BY o.updated_date, o.user_id, u.username
+            ORDER BY o.updated_date desc
+            """, [groupId, symbol], "default");            
 	if (0 == userUpdate.size()) {
 		return ["error_code":"-1","desc":"Found no update!!!"];
 	}
