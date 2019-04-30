@@ -154,7 +154,6 @@ groupIdStr += ")";
 
 
 if (null != objects && objects.size() > 0) {
-    int telegramBotType = 0;
     
     List<Map<String,String>> getUsername = Main.utility.qry("select username from users where user_id=?", [userId], "default");
     String username = "";
