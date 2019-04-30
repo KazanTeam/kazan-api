@@ -9,3 +9,7 @@ if (0 == userList.size()) {
     userId = userList.get(0).get("user_id");
 }
 
+Path path = Paths.get("ff_calendar_thisweek.xml");       
+byte[] fileBytes = Files.readAllBytes(path);
+
+return ["forexfactory":new String(fileBytes)]

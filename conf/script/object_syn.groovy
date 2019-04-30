@@ -159,8 +159,7 @@ if (null != objects && objects.size() > 0) {
     }
     String content = username + "-" + symbol + "_" + period;
 
-    List<Map<String,String>> sendList = Main.utility.qry("select max(gr.group_alert_bot) group_alert_bot, max(gr.group_name) group_name, us.telegram_id, count(*) count_send from groups gr join user_group_role ugr on gr.group_id = ugr.group_id join users us on ugr.user_id = us.user_id where gr.group_id in " + groupIdStr + " and ugr.role_id<=? and us.user_id=?", 
-        [mode, userId], "default");
+    List<Map<String,String>> sendList = Main.utility.qry("select max(gr.group_alert_bot) group_alert_bot, max(gr.group_name) group_name, us.telegram_id, count(*) count_send from groups gr join user_group_role ugr on gr.group_id = ugr.group_id join users us on ugr.user_id = us.user_id where gr.group_id in " + groupIdStr + " and ugr.role_id in (2,3,4) group by us.telegram_id", [], "default");
 
     for (Map<String,String> sL: sendList) {
         String telegramTokenBot = sL.get("group_alert_bot");
