@@ -15,20 +15,6 @@ if (0 == getGroupId.size()) {
 }
 String groupId = getGroupId.get(0).get("group_id");
 
-List<Map<String,String>> getRoleId = Main.utility.qry("select role_id, symbol_master, coalesce(expiry_date, subdate(sysdate(), 1)) > sysdate() in_use from user_group_role where  role_id in(2,3,4) and user_id=? and group_id=?", [userId, groupId], "default");
-if (0 == getRoleId.size()) {
-    return ["error_code":"-1","desc":"RoleId not found!"];
-}
-int roleId = Integer.parseInt(getRoleId.get(0).get("role_id"));
-String symbolStr = getRoleId.get(0).get("symbol_master");
-if (3 == roleId && null != symbolStr) {
-    String[] listSymbolMasters = symbolStr.split(",");
-    for(String symbolMaster: listSymbolMasters) {
-        if(symbol.equalsIgnoreCase(symbolMaster)) roleId = 2;
-    }
-} else if (4 == roleId && ("0" == getRoleId.get(0).get("in_use"))) {
-    roleId = 5;
-}
 
 List<Map<String,String>> userUpdate = Main.utility.qry("""
     SELECT o.mode_id, u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
