@@ -6,3 +6,4 @@ conf/script/test.groovy
 *.jpg
 *.png
 *.bmp
+ff_calendar_thisweek.xml
