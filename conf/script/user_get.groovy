@@ -15,18 +15,20 @@ if (0 == getGroupId.size()) {
 }
 String groupId = getGroupId.get(0).get("group_id");
 
-
 List<Map<String,String>> userUpdate = Main.utility.qry("""
-    SELECT o.mode_id, u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
+    SELECT u.email, u.username, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date) updated_date
     FROM object o JOIN users u on o.user_id = u.user_id
     WHERE o.group_id = ? and o.mode_id >= ? and o.symbol = ?
-    GROUP BY o.updated_date, o.user_id, u.username, o.mode_id
+    GROUP BY o.updated_date, o.user_id, u.username, u.email
     ORDER BY o.updated_date desc
     """, [groupId, mode, symbol], "default");            
 if (0 == userUpdate.size()) {
     return ["error_code":"-1","desc":"Found no update!!!"];
 }
-for (Map<String,String> uU: userUpdate) {
-    while (uU.values().remove(""));
+String [][] userArray = new String [userUpdate.size()][3];
+for (int i=0; i<userUpdate.size(); i++) {
+    userArray[i][0] = userUpdate.get(i).get("email");
+    userArray[i][1] = userUpdate.get(i).get("username");
+    userArray[i][2] = userUpdate.get(i).get("updated_date");
 }
-return ["error_code":"1","updates":userUpdate];
+return userArray;
