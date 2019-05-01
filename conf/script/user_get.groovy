@@ -18,10 +18,10 @@ String groupId = getGroupId.get(0).get("group_id");
 List<Map<String,String>> userUpdate = Main.utility.qry("""
     SELECT u.email, u.username, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date) updated_date
     FROM object o JOIN users u on o.user_id = u.user_id
-    WHERE o.group_id = ? and o.mode_id >= ? and o.symbol = ?
+    WHERE o.group_id = ? and o.symbol = ?
     GROUP BY o.updated_date, o.user_id, u.username, u.email
     ORDER BY o.updated_date desc
-    """, [groupId, mode, symbol], "default");            
+    """, [groupId, symbol], "default");            
 if (0 == userUpdate.size()) {
     return ["error_code":"-1","desc":"Found no update!!!"];
 }

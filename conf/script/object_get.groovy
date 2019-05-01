@@ -26,19 +26,11 @@ if(!"".equals(getFromUser)) {
 	user_id = getUserId.get(0).get("user_id");
 }
 
-String mode_id = mode;
 if("".equals(user_id)) {
-	 List<Map<String,String>> userUpdate = Main.utility.qry("""
-            SELECT u.user_id, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date)
-            FROM object o JOIN users u on o.user_id = u.user_id
-            WHERE o.group_id = ? and o.symbol = ?
-            GROUP BY o.updated_date, o.user_id, u.username
-            ORDER BY o.updated_date desc
-            """, [groupId, symbol], "default");            
+	 List<Map<String,String>> userUpdate = Main.utility.qry("SELECT user_id FROM object WHERE group_id=? and symbol=? ORDER BY updated_date desc", [groupId, symbol], "default");            
 	if (0 == userUpdate.size()) {
 		return ["error_code":"-1","desc":"Found no update!!!"];
 	}
-	mode_id = userUpdate.get(0).get("mode_id");
 	user_id = userUpdate.get(0).get("user_id");
 }
 
