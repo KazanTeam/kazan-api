@@ -20,8 +20,6 @@ if (0 == getRoleId.size()) {
     return ["error_code":"-1","desc":"RoleId not found!"];
 }
 
-
-
 String user_id = "";            
 if(!"".equals(getFromUser)) {
 	List<Map<String,String>> getUserId = Main.utility.qry("select user_id from users where email=?", [getFromUser], "default");
