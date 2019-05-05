@@ -28,7 +28,7 @@ if (binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
 
     new TelegramBot(Main.props.getString("telegram_bot_default")).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
 } else {
-    new TelegramBot(telegramTokenBot).execute(new SendMessage(telegramId, sendedContent));
+    new TelegramBot(Main.props.getString("telegram_bot_default")).execute(new SendMessage(telegramId, sendedContent));
 }
 
 return 0;
