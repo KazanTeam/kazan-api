@@ -38,4 +38,4 @@ List<Map<String,String>> objectList = Main.utility.qry("select * from object whe
 for (Map<String,String> oL: objectList) {
 	while (oL.values().remove(""));
 }
-return ["error_code":"1","objects":gson.toJson(objectList)];
+return 0;

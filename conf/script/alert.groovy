@@ -28,4 +28,4 @@ if (binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
     SendResponse response = new TelegramBot(Main.props.getString("telegram_bot_default")).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
 }
 
-return ["error_code":"1","desc":"Alerted!"];
+return 0;

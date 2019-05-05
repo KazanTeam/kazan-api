@@ -12,4 +12,4 @@ if (0 == userList.size()) {
 Path path = Paths.get("ff_calendar_thisweek.xml");       
 byte[] fileBytes = Files.readAllBytes(path);
 
-return ["forexfactory":new String(fileBytes)]
+return 0

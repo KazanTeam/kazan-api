@@ -31,4 +31,4 @@ for (int i=0; i<userUpdate.size(); i++) {
     userArray[i][1] = userUpdate.get(i).get("username");
     userArray[i][2] = userUpdate.get(i).get("updated_date");
 }
-return userArray;
+return 0;

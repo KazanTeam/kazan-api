@@ -185,4 +185,4 @@ if (null != objects && objects.size() > 0) {
     }
 }
         
-return ["error_code":"1","desc":"Object list synchronized!"];
+return 0;

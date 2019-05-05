@@ -64,4 +64,4 @@ for (Map<String,String> sL: sendList) {
     }
 }
 
-return ["error_code":"1","desc":"Message added successfully!"];
+return 0
