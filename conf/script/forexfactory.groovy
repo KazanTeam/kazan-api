@@ -11,5 +11,6 @@ if (0 == userList.size()) {
 
 Path path = Paths.get("ff_calendar_thisweek.xml");       
 byte[] fileBytes = Files.readAllBytes(path);
-
-return new String(fileBytes)
+String returnString = new String(fileBytes);
+returnString = returnString.replaceAll("\\t","");
+return returnString;
