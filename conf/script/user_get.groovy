@@ -16,7 +16,7 @@ if (0 == getGroupId.size()) {
 String groupId = getGroupId.get(0).get("group_id");
 
 List<Map<String,String>> userUpdate = Main.utility.qry("""
-    SELECT u.email, u.username, TIMESTAMPDIFF(MICROSECOND,'1970-01-01',o.updated_date) updated_date
+    SELECT u.email, u.username, TIMESTAMPDIFF(SECOND,'1970-01-01',o.updated_date) updated_date
     FROM object o JOIN users u on o.user_id = u.user_id
     WHERE o.group_id = ? and o.symbol = ?
     GROUP BY o.updated_date, o.user_id, u.username, u.email
