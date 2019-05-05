@@ -2,6 +2,7 @@ import org.d.api.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.request.SendMessage;
 import sun.misc.BASE64Decoder;
 
 String userId = "";
@@ -61,6 +62,8 @@ for (Map<String,String> sL: sendList) {
         byte[] imageByte = new BASE64Decoder().decodeBuffer(image_data);
 
         SendResponse response = new TelegramBot(telegramTokenBot).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
+    } else {
+        SendResponse response = new TelegramBot(telegramTokenBot).execute(new SendMessage(telegramId, sendedContent));
     }
 }
 
