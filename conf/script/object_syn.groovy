@@ -3,7 +3,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pengrad.telegrambot.request.SendPhoto;
 import sun.misc.BASE64Decoder;
-
+import com.google.gson.GsonBuilder;
+gson = new GsonBuilder().setLenient().create();
 String userId = "";
 List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
 if (0 == userList.size()) {
