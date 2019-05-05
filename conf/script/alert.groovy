@@ -2,6 +2,7 @@ import org.d.api.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.request.SendMessage;
 import sun.misc.BASE64Decoder;
 
 String userId = "";
@@ -25,7 +26,9 @@ sendedContent += symbol + "-" + period
 if (binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
     byte[] imageByte = new BASE64Decoder().decodeBuffer(image_data);
 
-    SendResponse response = new TelegramBot(Main.props.getString("telegram_bot_default")).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
+    new TelegramBot(Main.props.getString("telegram_bot_default")).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
+} else {
+    new TelegramBot(telegramTokenBot).execute(new SendMessage(telegramId, sendedContent));
 }
 
 return 0;

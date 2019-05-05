@@ -61,9 +61,9 @@ for (Map<String,String> sL: sendList) {
     if(binding.hasVariable("image_name") && binding.hasVariable("image_data")) {
         byte[] imageByte = new BASE64Decoder().decodeBuffer(image_data);
 
-        SendResponse response = new TelegramBot(telegramTokenBot).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
+        new TelegramBot(telegramTokenBot).execute(new SendPhoto(telegramId, imageByte).caption(sendedContent));
     } else {
-        SendResponse response = new TelegramBot(telegramTokenBot).execute(new SendMessage(telegramId, sendedContent));
+        new TelegramBot(telegramTokenBot).execute(new SendMessage(telegramId, sendedContent));
     }
 }
 
