@@ -23,7 +23,9 @@ if (0 == getRoleId.size()) {
 String user_id = "";            
 if(!"".equals(getFromUser)) {
 	List<Map<String,String>> getUserId = Main.utility.qry("select user_id from users where email=?", [getFromUser], "default");
-	user_id = getUserId.get(0).get("user_id");
+	if (getUserId.size() > 0) {
+		user_id = getUserId.get(0).get("user_id");
+	}
 }
 
 if("".equals(user_id)) {
