@@ -7,7 +7,7 @@ import sun.misc.BASE64Decoder;
 String userId = "";
 List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
 if (0 == userList.size()) {
-    return ["error_code":"-1","desc":"Wrong Email or Password!!!"];
+    return "Wrong Email or Password!!!"
 } else {
     userId = userList.get(0).get("user_id");
 }
@@ -16,13 +16,13 @@ List<String> groupIds = new ArrayList<String>();
 for (String groupAlias: groupAliases) {
     List<Map<String,String>> getGroupId = Main.utility.qry("select group_id from user_group_role where role_id in(2,3) and user_id=? and group_alias=?", [userId, groupAlias], "default");
     if (0 == getGroupId.size()) {
-        return ["error_code":"-1","desc":"Group not found!"];
+        return "Group not found!"
     }
     groupIds.add(getGroupId.get(0).get("group_id"));
 }
 		
 if (groupIds.isEmpty()) {
-    return ["error_code":"-1","desc":"No available group!"];
+    return "No available group!"
 } 
 
 String groupIdStr = "(";
@@ -37,7 +37,7 @@ String username = "";
 if (getUsername.size() > 0) {
     username = getUsername.get(0).get("username");
 } else {
-    return ["error_code":"-1","desc":"Cannot find username from userId!"];
+    return "Cannot find username from userId!"
 }
 String content = username + ": ";
 

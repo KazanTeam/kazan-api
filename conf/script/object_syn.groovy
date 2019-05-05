@@ -8,7 +8,7 @@ gson = new GsonBuilder().setLenient().create();
 String userId = "";
 List<Map<String,String>> userList = Main.utility.qry("select user_id from users where email=? and password=?", [email, password], "default");
 if (0 == userList.size()) {
-    return ["error_code":"-1","desc":"Wrong Email or Password!!!"];
+    return "Wrong Email or Password!!!"
 } else {
     userId = userList.get(0).get("user_id");
 }
@@ -139,7 +139,7 @@ for (String groupAlias: groupAliases) {
 }
 		
 if (groupIds.isEmpty()) {
-    return ["error_code":"-1","desc":"No available group!"];
+    return "No available group!"
 } 
 String groupIdStr = "(";
 for (String groupId: groupIds) {
@@ -156,7 +156,7 @@ if (null != objects && objects.size() > 0) {
     if (getUsername.size() > 0) {
         username = getUsername.get(0).get("username");
     } else {
-        return ["error_code":"-1","desc":"Cannot find username from userId!"];
+        return "Cannot find username from userId!"
     }
     String content = username + "-" + symbol + "_" + period;
 
