@@ -42,6 +42,7 @@ for (String groupAlias: groupAliases) {
                     objprop_levelcolor,
                     objprop_levels,
                     objprop_levelstyle,
+                    objprop_leveltext_0,
                     objprop_leveltext_1,
                     objprop_leveltext_10,
                     objprop_leveltext_2,
@@ -52,6 +53,7 @@ for (String groupAlias: groupAliases) {
                     objprop_leveltext_7,
                     objprop_leveltext_8,
                     objprop_leveltext_9,
+                    objprop_levelvalue_0,
                     objprop_levelvalue_1,
                     objprop_levelvalue_10,
                     objprop_levelvalue_2,
@@ -78,7 +80,7 @@ for (String groupAlias: groupAliases) {
                     objprop_timeframes,
                     objprop_type,
                     objprop_width) 
-                values(?,?,?,?,sysdate(),?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?)
+                values(?,?,?,?,sysdate(),?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?)
                 """, 
                 [userId, groupId, mode, symbol,
                     obj.get("objprop_angle"),
@@ -97,6 +99,7 @@ for (String groupAlias: groupAliases) {
                     obj.get("objprop_levelcolor"),
                     obj.get("objprop_levels"),
                     obj.get("objprop_levelstyle"),
+                    obj.get("objprop_leveltext_0"),
                     obj.get("objprop_leveltext_1"),
                     obj.get("objprop_leveltext_10"),
                     obj.get("objprop_leveltext_2"),
@@ -107,6 +110,7 @@ for (String groupAlias: groupAliases) {
                     obj.get("objprop_leveltext_7"),
                     obj.get("objprop_leveltext_8"),
                     obj.get("objprop_leveltext_9"),
+                    obj.get("objprop_levelvalue_0"),
                     obj.get("objprop_levelvalue_1"),
                     obj.get("objprop_levelvalue_10"),
                     obj.get("objprop_levelvalue_2"),
