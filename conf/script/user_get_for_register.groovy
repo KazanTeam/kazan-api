@@ -4,5 +4,5 @@ List<Map<String,String>> thisUser = Main.utility.qry("select user_id,email,teleg
 if (0 == thisUser.size()) {
     return ["error":"No user with this user_id or user has registered!!!"]
 } else {
-    return thisUser
+    return thisUser.get(0)
 }
