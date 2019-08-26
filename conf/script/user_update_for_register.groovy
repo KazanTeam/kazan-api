@@ -8,7 +8,7 @@ if (jwt.getExpiresAt() < now)
     return ["http_code":"404","error":"Invalid FireBase token - Exprired!!!"]
 if (jwt.getIssuedAt() > now)
     return ["http_code":"404","error":"Invalid FireBase token - Issue date at the future!!!"]
-if (jwt.getAudience() != "[kazan-trading]")
+if (jwt.getAudience().get(0) != "[kazan-trading]")
     return ["http_code":"404","error":"Invalid FireBase token - Wrong Audience!!!"]
 if (jwt.getIssuer() != "https://securetoken.google.com/kazan-trading")
     return ["http_code":"404","error":"Invalid FireBase token - Wrong Issuer!!!"]    
