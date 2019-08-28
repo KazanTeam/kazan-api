@@ -22,7 +22,9 @@ String decoded_email = jwt.getClaim("email").asString()
 if (null = decoded_email || decoded_email.trim() == "")
     return ["http_code":"404","error":"Invalid FireBase token - No email!!!"]
 
-String result = Main.utility.upd("update users set email=?,first_name=?,last_name=?,username=?,password=? where user_id=?", 
-                [email,first_name,last_name,username,password,user_id], "default");
-
-return result
+List<Map<String,String>> thisUser = Main.utility.qry("select user_id,email,telegram_id,phone,first_name,last_name,user_image,username,create_at,update_at,active from users where email=?", [decoded_email], "default");
+if (0 == thisUser.size()) {
+    return ["http_code":"404","error":"No user with this email!!!"]
+} else {
+    return thisUser.get(0)
+}
