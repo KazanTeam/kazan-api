@@ -19,7 +19,7 @@ if (jwt.getNotBefore() > now)
     return ["http_code":"404","error":"Invalid FireBase token - Not Before at the future!!!"]
 
 String decoded_email = jwt.getClaim("email").asString()
-if (null = decoded_email || decoded_email.trim() == "")
+if (null == decoded_email || decoded_email.trim() == "")
     return ["http_code":"404","error":"Invalid FireBase token - No email!!!"]
 
 List<Map<String,String>> thisUser = Main.utility.qry("select user_id,email,telegram_id,phone,first_name,last_name,user_image,username,create_at,update_at,active from users where email=?", [decoded_email], "default");
