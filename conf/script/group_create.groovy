@@ -36,18 +36,9 @@ String result = Main.utility.upd("""
                 """, 
                 [groupId,group_name,group_image,group_alert_bot,creater,update_at,active], "default");    
 
-String userId = ""
-List<Map<String,String>> userSequence = Main.utility.qry("select user_id from users where email=?", 
-    [decoded_email], "default");
-if (0 == userSequence.size()) {
-    return ["http_code":"404","error":"Cannot retrieve userId from email!!!"]
-} else {
-    userId = userSequence.get(0).get("user_id");
-}  
-
 result = Main.utility.upd("""
-        insert into user_group_role(user_id,group_id,role_id,group_alias) values(?,?,?,?)
+        insert into user_group_role(user_id,group_id,role_id,group_alias) values(?,?,1,?)
         """, 
-        [userId,groupId,role_id,group_name], "default");    
+        [creater,groupId,group_name], "default");    
 
 return result
