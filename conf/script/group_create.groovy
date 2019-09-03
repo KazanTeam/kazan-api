@@ -41,7 +41,7 @@ result = Main.utility.upd("""
         """, 
         [creater,groupId,group_name], "default");    
 
-List<Map<String,String>> groupReturn = Main.utility.qry("SELECT * FROM groups", [], "default");
+List<Map<String,String>> groupReturn = Main.utility.qry("SELECT * FROM groups where group_id=?", [groupId], "default");
 if (0 == groupSequence.size()) {
     return ["http_code":"404","error":"Cannot retrieve new group!!!"]
 }  
