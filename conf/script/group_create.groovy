@@ -29,7 +29,7 @@ if (0 == groupSequence.size()) {
     return ["http_code":"404","error":"Cannot create new sequence for new group!!!"]
 } else {
     groupId = groupSequence.get(0).get("auto_increment");
-}   
+}
 
 String result = Main.utility.upd("""
                 insert into groups(group_id,group_name,group_image,group_alert_bot,creater,update_at,active) values(?,?,?,?,?,?,?)
@@ -41,4 +41,9 @@ result = Main.utility.upd("""
         """, 
         [creater,groupId,group_name], "default");    
 
-return result
+List<Map<String,String>> groupReturn = Main.utility.qry("SELECT * FROM groups", [], "default");
+if (0 == groupSequence.size()) {
+    return ["http_code":"404","error":"Cannot retrieve new group!!!"]
+}  
+
+return groupReturn
